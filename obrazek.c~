@@ -1,0 +1,92 @@
+#include <string.h>
+#include <gtk/gtk.h>
+#include <stdlib.h>
+#include <locale.h>
+#include "gdal.h"
+#include "cpl_conv.h"
+#include "mapa.h"
+
+/*typedef struct{
+    int h, w, maxval;
+    int ** obraz;
+        
+}mapa;*/
+
+mapa* stworz_nowa_mape(int h, int w){
+    mapa* m = malloc(sizeof(mapa));
+    m->h = h;
+    m->w = w;
+    m->maxval =0; 
+    m->obraz =(int**) malloc(sizeof(int*)*h);
+    for(int i = 0; i<h; i++) m->obraz[i] = malloc(sizeof(int)*w); 
+    return m;
+}
+
+mapa* wczytaj_mape_z_pliku(char* nazwa){//nie ma na razie maxval - do testow
+    FILE* plik = fopen(nazwa, "r");
+    int h, w;
+    fscanf(plik, "%d %d", &h, &w);
+    mapa* m = stworz_nowa_mape(h, w);
+    for(int i = 0; i<m->h; i++)
+        for(int j = 0; j<(m->w); j++){
+            fscanf(plik, "%d", &(m->obraz)[i][j]);
+        }
+    return m;
+}
+
+/*mapa* wczytaj_mape_z_formatu(char* nazwa){
+    GDALRasterBandH hBand= wczytaj_dane_z_pliku(nazwa);
+    
+    
+    
+    
+}
+
+GdkRGBA* znajdz_kolor(int wysokosc, paleta* pal){
+    poziom* p = pal->p;
+    while(p!= NULL && p->wysokosc < wysokosc){// poziomica jest supremum obejmowanych punktow
+        p= p->nastepny;        
+    }
+    if(p==NULL){
+        GdkRGBA* kolor = g_malloc(sizeof(GdkRGBA));
+        gdk_rgba_parse (kolor,"YellowGreen");
+        return kolor;
+    }
+    else return &(p->kolor);    
+}
+
+
+short get_green(GdkRGBA* kolor){
+    return 0.5+kolor->green*255.;
+}
+short get_red(GdkRGBA* kolor){
+    return 0.5+kolor->red*255.;
+}
+short get_blue(GdkRGBA* kolor){
+    return 0.5+kolor->blue*255.;
+}
+
+void zmien_pixel( GdkPixbuf* imageptr, int x, int y, GdkRGBA* kol) //zrodlo tej funkcji http://stackoverflow.com/questions/16785886/get-pixel-value-on-gdkpixbuf-set-pixel-value-with-gdkcairo
+   {
+   if ( kol == NULL) return;
+   if ( imageptr==NULL ) return;
+   if ( !( x>=0 && y>=0 && x<gdk_pixbuf_get_width(imageptr) && y<gdk_pixbuf_get_height(imageptr) ) ) return;
+
+   int offset = y*gdk_pixbuf_get_rowstride(imageptr) + x*gdk_pixbuf_get_n_channels(imageptr);
+   guchar * pixel = &gdk_pixbuf_get_pixels(imageptr)[ offset ]; // get pixel pointer
+   pixel[0] = get_red(kol);
+   pixel[1] = get_green(kol);
+   pixel[2] = get_blue(kol);
+    }
+
+GdkPixbuf* zamien_na_kolorki(GdkPixbuf* wynik, paleta* pal, mapa* m){
+    if(wynik == NULL) wynik = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, m->w, m->h);
+    for(int i = 0; i<m->h; i++)
+        for(int j = 0; j<m->w; j++){
+                GdkRGBA* aktkolor = znajdz_kolor((m->obraz)[i][j], pal);   
+                zmien_pixel(wynik, i, j, aktkolor);
+                            
+        }
+    return wynik;
+}
+

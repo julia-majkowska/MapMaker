@@ -1,0 +1,2 @@
+gcc `gdal-config --cflags` -o konwersja konwersja.c `gdal-config --libs`
+gcc `pkg-config --cflags gtk+-3.0` kalkulator16.c -o kalkulator16 `pkg-config --libs gtk+-3.0`

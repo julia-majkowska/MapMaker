@@ -1,0 +1,1 @@
+gcc `gdal-config --cflags` -o konwersja konwersja.c `gdal-config --libs`

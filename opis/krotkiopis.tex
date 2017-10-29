@@ -1,0 +1,61 @@
+\documentclass[a4paper]{article}
+% Kodowanie latain 2
+%\usepackage[latin2]{inputenc}
+\usepackage[T1]{fontenc}
+% Można też użyć UTF-8
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+% Język
+\usepackage[polish]{babel}
+% \usepackage[english]{babel}
+
+% Rózne przydatne paczki:
+% - znaczki matematyczne
+\usepackage{amsmath, amsfonts}
+% - wcięcie na początku pierwszego akapitu
+\usepackage{indentfirst}
+% - komenda \url w wersji nie tworzącej dodatkowej ramki
+\usepackage[pdfborder={0 0 0 0}]{hyperref}
+% - dołączanie obrazków
+\usepackage{graphics}
+% - szersza strona
+\usepackage[nofoot,hdivide={2cm,*,2cm},vdivide={2cm,*,2cm}]{geometry}
+\usepackage{lmodern}
+\frenchspacing
+% - brak numerów stron
+\pagestyle{empty}
+
+% dane autora
+\author{Julia Majkowska}
+\title{Krótki opis projektu}
+\date{\today}
+
+% początek dokumentu
+\begin{document}
+ \maketitle
+ Program umożliwiający zamianę mapy wysokości na kolorową mapę hipsometryczną. \\
+ Będzie umożliwiał :
+ 
+ - wybór w nowym okienku pliku źródłowego tablicy wysokosci(obslugiwane będą formaty DTED( Level 0,1,2), SRTM(pliki binarne HGT, TIFF, PNG)
+ 
+ - stworzenie własnego zestawu poziomic i odpowiadającej mu palety, przez dodawanie i usuwanie poziomic (za pomocą odpowiednych przycisków i przypisywanie im wartosci w metrach ( wpisując ją do pola tekstowgo -GtkEntry) oraz koloru (przez kliknięcie odpowiedniego przycisku i wybranie koloru myszką w okienku -skorzystam ze struktury GtkColorChooserButton)
+ 
+ - zapis poziomic i palety do istniejącego lub nowego pliku,wybranego lub wpisanego w odpowiednim okienku (skorzystam ze struktury GtkFileChooserDialog)
+ 
+ - wczytanie zestawu poziomic i palety , zastępując stworzone w oknie poziomice, z pliku wybranego w nowym okienku
+ 
+ - wczytanie poziomic dodając je do palety w okienku, z pliku wybranego w nowym okienku
+ 
+ - skorzystania z domyślnej palety kolorów ( po kliknięciu odpowiedniego przycisku aktulana paleta zostanie zastąpiona domyslną)
+ 
+ - podgląd mapy dla aktualnej palety i poziomic w nowym oknie po kliknięciu odpowiedniego przycisku (struktura z tablicą wysokości będzie konwertowana do struktury GtkPixbuf i wyświetlana z pomocą funkcji gtk_image_new_from_pixbuf).
+ 
+ - zapis mapy do pliku png, przez kliknięcie przycisku i wybranie lub wpisanie pliku w nowym okienku 
+ 
+
+Wszelkie pliki (palety i mapy)  dla programu musza znajdować się w tym samym katalogu co program. Nowo utworzone pliki również będą się tworzyć w tym katalogu co program.
+
+ 
+
+\end{document}
+
